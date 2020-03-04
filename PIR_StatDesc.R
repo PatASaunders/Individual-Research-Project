@@ -60,8 +60,8 @@ d
 
 #############################
 
-df_small <- subset(data, Eng_Disp<=2.5)
-df_big   <- subset(data, Eng_Disp>2.5)
+df_small <- data[data$kg <= 1600 & data$bhp <=200,]
+df_big   <- data[data$kg <= 1600 & data$bhp <=200,]
 
 SC_MixSmall <- ggplot(df_small, aes(x=Eng_Disp, y=Mix_Conso)) + geom_point()
 SC_MixSmall
@@ -80,7 +80,7 @@ SC_HwyBig <- ggplot(df_big, aes(x=Eng_Disp, y=Hwy_Conso)) + geom_point()
 SC_HwyBig
 
 ########### Superposition de Hwy_Small et City_Small et pour big
-SC_Small <- ggplot(data, aes(x=Eng_Disp, y=City_Conso, color=(City_Conso))) + aes(x=Eng_Disp, y=Hwy_Conso) + geom_point()
+SC_Small <- ggplot(data, aes(x=City_Conso, y=City_Conso, color=(Eng_Disp))) + aes(x=City_Conso, y=Hwy_Conso) + geom_point()
 SC_Small
 ###########
 
@@ -112,5 +112,16 @@ SC_MAsp <- ggplot(data, aes(x=Eng_Disp, y=Mix_Conso, color=(Aspir_Method))) + ge
 SC_MAsp
 
 # NCyl 
+
+
+# Regression avec 'petites voitures'
+
+
+
+
+
+
+
+
 
 
