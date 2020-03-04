@@ -5,6 +5,9 @@ library(ggplot2)
 library(olsrr)
 library(mlogit)
 library(tidyverse)
+library(plotly)
+library(mlogit)
+
 
 data = read_excel("C:/Users/Patrice/Desktop/Classes/PIR/Dataset_V1.2.xlsx")
 View(data)
@@ -44,12 +47,70 @@ BP_CC_I
 BP_HC_I <- ggplot(data, aes(x=Fuel_Metering_Sys, y=Hwy_Conso)) + geom_boxplot(coef=6)
 BP_HC_I
 
-#Rechercher si tout les diesels utilisent CRDDI!!
-
 # TAILLE MOTEUR NCYL
 
+ggplot(data, aes(x=Eng_Disp, y=City_Conso, z=nCyl), type="scatter3d")+geom_point()
+
+data$nCyl <- as.factor(data$nCyl)
+p <- ggplot(data, aes(x=Eng_Disp, y=Mix_Conso, color=nCyl)) + geom_point()
+p
+
+d <- plot_ly(data=data, x=~Eng_Disp, y=~City_Conso, type="scatter", mode="markers")
+d
+
+#############################
+
+df_small <- subset(data, Eng_Disp<=2.5)
+df_big   <- subset(data, Eng_Disp>2.5)
+
+SC_MixSmall <- ggplot(df_small, aes(x=Eng_Disp, y=Mix_Conso)) + geom_point()
+SC_MixSmall
+
+SC_CitySmall <- ggplot(df_small, aes(x=Eng_Disp, y=City_Conso)) + geom_point()
+SC_CitySmall
+SC_HwySmall <- ggplot(df_small, aes(x=Eng_Disp, y=Hwy_Conso)) + geom_point()
+SC_HwySmall
+
+SC_MixBig   <- ggplot(df_big, aes(x=Eng_Disp, y=Mix_Conso)) + geom_point()
+SC_MixBig
+
+SC_CityBig <- ggplot(df_big, aes(x=Eng_Disp, y=City_Conso)) + geom_point()
+SC_CityBig
+SC_HwyBig <- ggplot(df_big, aes(x=Eng_Disp, y=Hwy_Conso)) + geom_point()
+SC_HwyBig
+
+########### Superposition de Hwy_Small et City_Small et pour big
+SC_Small <- ggplot(data, aes(x=Eng_Disp, y=City_Conso, color=(City_Conso))) + aes(x=Eng_Disp, y=Hwy_Conso) + geom_point()
+SC_Small
+###########
+
+SC_DConsoSmall <- ggplot(df_small, aes(x=Eng_Disp, y=DConso)) + geom_point()
+SC_DConsoSmall
+
+SC_DConsoBig <- ggplot(df_big, aes(x=Eng_Disp, y=DConso)) + geom_point()
+SC_DConsoBig
+
+# Roues motrices (truck et nontruck)
+
+df_truck <- subset(data, Truck==1)
+df_car <- subset(data, Truck==0)
+
+data$Drive_Desc <- as.factor(data$Drive_Desc)
+
+SC_MCWheel <- ggplot(df_car, aes(x=Drive_Desc, y=Mix_Conso, color=(Drive_Desc))) + geom_point()
+SC_MCWheel
+
+SC_MTWheel <- ggplot(df_truck, aes(x=Drive_Desc, y=Mix_Conso, color=(Drive_Desc))) + geom_point()
+SC_MTWheel
+# DATA MINING NECESSARY
 
 
+# Air Aspiration & Eng_Disp
 
+data$Aspir_Method <- as.factor(data$Aspir_Method)
+SC_MAsp <- ggplot(data, aes(x=Eng_Disp, y=Mix_Conso, color=(Aspir_Method))) + geom_point()
+SC_MAsp
+
+# NCyl 
 
 

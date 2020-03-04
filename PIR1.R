@@ -6,17 +6,13 @@ library(olsrr)
 library(mlogit)
 
 data = read_excel("C:/Users/Patrice/Desktop/Classes/PIR/Dataset_V1.2.xlsx")
-data_r <- 
+view(data)
 
-data3<-data[complete.cases(data),]
-data2
-View(data3)
-
-model = lm(log(City_conso)~Eng_Disp, data=data)
+model = lm(Mix_Conso~Eng_Disp, data=data)
 model
 coeftest(model, vcov. = vcovHC, type="HC1")
 
-plot(log(City_conso)~Eng_Disp,
+plot(log(City_Conso)~Eng_Disp,
      col="steelblue",
      pch=20,
      data=data,
@@ -75,4 +71,42 @@ qplot(Trans, City_Conso,data=data)
 model1<-lm(log(City_Conso)~AMS+AM+SA+A+SCV+CVT, data=data)
 model1
 
+# CO2 ET CONSO
+
+df_essence <- subset(data, Essence==1)
+df_diesel <- subset(data, Essence == 0)
+view(df_essence)
+
+model_MixEss = lm(Mix_Conso~CombCO2KM, data=df_essence)
+model_MixEss
+model_MixDie = lm(Mix_Conso~CombCO2KM, data=df_diesel)
+model_MixDie
+
+data$Essence<- as.factor(data$Essence)
+SP_CombC_T <- ggplot(data, aes(x=CombCO2KM, y=Mix_Conso, color=Essence)) + 
+  geom_point() + 
+  geom_abline(intercept = -0.01614, slope=0.04271) + 
+  geom_abline(intercept = -0.22091, slope=0.03803)
+SP_CombC_T
+
+model_HwyEss = lm(Hwy_Conso~HCO2KM, data=df_essence)
+model_HwyEss
+model_HwyDie = lm(Hwy_Conso~HCO2KM, data=df_diesel)
+model_HwyDie
+model_CityEss = lm(City_Conso~CCO2KM, data=df_essence)
+model_CityEss
+model_CityDie = lm(City_Conso~CCO2KM, data=df_diesel)
+model_CityDie
+
+SP_HC_T <- ggplot(data, aes(x=HCO2KM, y=Hwy_Conso, color=Essence)) + 
+  geom_point() + 
+  geom_abline(intercept = -0.004264, slope=0.042691) + 
+  geom_abline(intercept = -0.33585, slope=0.03871)
+SP_HC_T
+
+SP_CC_T <- ggplot(data, aes(x=CCO2KM, y=City_Conso, color=Essence)) + 
+  geom_point() + 
+  geom_abline(intercept = -0.009926, slope=0.042716) + 
+  geom_abline(intercept = -0.14757, slope=0.03772)
+SP_CC_T
 
