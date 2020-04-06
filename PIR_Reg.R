@@ -107,11 +107,24 @@ summary(Third_RegHR)
 df_small <- subset(df_essence, Eng_Disp < 2)
 df_nsmall <- subset(df_essence, Eng_Disp >= 2)
 
-thrdRS  <- lm(log(Mix_Conso) ~ EngCyl + KG + BHP + AM_ALL + CVT_ALL + SA + A + TC + MSFI + Stop_Start + DriveFWD + DriveRWD, data=df_small)
-thrdRnS <- lm(log(Mix_Conso) ~ EngCyl + KG + BHP + AM_ALL + CVT_ALL + SA + A + TC + SC + MSFI + SIDPI + Stop_Start + DriveFWD + DriveRWD, data=df_nsmall)
+thrdRCS  <- lm(log(City_Conso) ~ EngCyl + KG + BHP + AM_ALL + CVT_ALL + SA + A + TC + MSFI + Stop_Start + Deux_Roues, data=df_small)
+thrdRHS  <- lm(log(Hwy_Conso) ~ EngCyl + KG + BHP + AM_ALL + CVT_ALL + SA + A + TC + MSFI + Stop_Start + Deux_Roues, data=df_small)
 
-summary(thrdRS)
-summary(thrdRnS)
+vif(thrdRS)
+
+thrdRCnS <- lm(log(City_Conso) ~ EngCyl + KG + BHP + AM_ALL + CVT_ALL + SA + A + TC + SC + MSFI + SIDPI + Stop_Start + Deux_Roues, data=df_nsmall)
+thrdRHnS <- lm(log(Mix_Conso) ~ EngCyl + KG + BHP + AM_ALL + CVT_ALL + SA + A + TC + SC + MSFI + SIDPI + Stop_Start + Deux_Roues, data=df_nsmall)
+
+summary(thrdRCS)
+summary(thrdRHS)
+summary(thrdRCnS)
+summary(thrdRHnS)
+
+
+
+
+
+
 
 
 
