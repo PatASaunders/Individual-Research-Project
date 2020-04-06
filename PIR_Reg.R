@@ -37,7 +37,7 @@ summary(First_RegM)
 
 bptest(First_RegM)
 
-First_RegMR <- lmrob(log(Mix_Conso) ~ EngCyl + Truck + Essence + Auto + Forced_Induction + Stop_Start + Deux_Roues, data=data)
+First_RegMR <- lm(log(Mix_Conso) ~ EngCyl + Truck + Essence + Auto + Forced_Induction + Stop_Start + Deux_Roues, data=data)
 summary(First_RegMR)
 vif(First_RegMR)
 
@@ -57,7 +57,7 @@ curve(dnorm(x, mean=0, sd = sqrt(var(residuals(Second_RegM)))), col="red", lwd=2
 bptest(Second_RegM)
 summary(Second_RegM)
 
-Second_RegMR <- lmrob(log(Mix_Conso) ~ EngCyl + AM_ALL + CVT_ALL + SA + A + Forced_Induction + MSFI + SIDPI + Stop_Start + DriveFWD + DriveRWD, data=data)
+Second_RegMR <- lm(log(Mix_Conso) ~ EngCyl + AM_ALL + CVT_ALL + SA + A + Forced_Induction + MSFI + SIDPI + Stop_Start + DriveFWD + DriveRWD, data=df_essence)
 
 vif(Second_RegMR)
 
@@ -67,13 +67,13 @@ summary(Second_RegMR)
 
 ###################THIRD###############################################################################
 
-Third_RegM <- lm(log(Mix_Conso) ~ EngCyl + AM_ALL + CVT_ALL + SA + A + TC + SC + OT + TS + MSFI + SIDPI + Stop_Start + DriveFWD + DriveRWD, data=df_essence)
+Third_RegM <- lm(log(Mix_Conso) ~ EngCyl + BHP_KG + AM_ALL + CVT_ALL + SA + A + TC + SC + MSFI + SIDPI + Stop_Start + DriveFWD + DriveRWD, data=df_essence)
 
 hist(residuals(Third_RegM), freq=FALSE)
 curve(dnorm(x, mean=0, sd = sqrt(var(residuals(Third_RegM)))), col="red", lwd=2, add=TRUE)
 bptest(Third_RegM)
 
-Third_RegMR <- lmrob(log(Mix_Conso) ~ EngCyl + AM_ALL + CVT_ALL + SA + A + TC + SC + MSFI + SIDPI + Stop_Start + DriveFWD + DriveRWD, data=df_essence)
+Third_RegMR <- lm(log(Mix_Conso) ~ EngCyl + BHP + KG + AM_ALL + CVT_ALL + SA + A + TC + SC + MSFI + SIDPI + Stop_Start + DriveFWD + DriveRWD, data=df_essence)
 
 vif(Third_RegMR)
 
@@ -83,20 +83,20 @@ summary(Third_RegMR)
 
 ###############THIRD MULTIPLE##########################################################################
 
-Third_RegC <- lm(log(City_Conso) ~ EngCyl + KG + BHP + AM_ALL + CVT_ALL + SA + A + TC + SC + MSFI + SIDPI + Stop_Start + DriveFWD + DriveRWD, data=df_essence)
+Third_RegC <- lm(log(City_Conso) ~ EngCyl + KGBHP + AM_ALL + CVT_ALL + SA + A + TC + SC + MSFI + SIDPI + Stop_Start + DriveFWD + DriveRWD, data=df_essence)
 
 hist(residuals(Third_RegC), freq=FALSE)
 curve(dnorm(x, mean=0, sd = sqrt(var(residuals(Third_RegC)))), col="red", lwd=2, add=TRUE)
 bptest(Third_RegC)
 
-Third_RegH <- lm(log(Hwy_Conso) ~ EngCyl + KG + BHP + AM_ALL + CVT_ALL + SA + A + TC + SC + MSFI + SIDPI + Stop_Start + DriveFWD + DriveRWD, data=df_essence)
+Third_RegH <- lm(log(Hwy_Conso) ~ EngCyl + KGBHP + AM_ALL + CVT_ALL + SA + A + TC + SC + MSFI + SIDPI + Stop_Start + DriveFWD + DriveRWD, data=df_essence)
 
 hist(residuals(Third_RegH), freq=FALSE)
 curve(dnorm(x, mean=0, sd = sqrt(var(residuals(Third_RegH)))), col="red", lwd=2, add=TRUE)
 bptest(Third_RegH)
 
-Third_RegCR <- lmrob(log(City_Conso) ~ EngCyl + KG + BHP + AM_ALL + CVT_ALL + SA + A + TC + SC + MSFI + SIDPI + Stop_Start + DriveFWD + DriveRWD, data=df_essence)
-Third_RegHR <- lmrob(log(Hwy_Conso) ~ EngCyl + KG + BHP + AM_ALL + CVT_ALL + SA + A + TC + SC + MSFI + SIDPI + Stop_Start + DriveFWD + DriveRWD, data=df_essence)
+Third_RegCR <- lm(log(City_Conso) ~ EngCyl + KG + BHP + AM_ALL + CVT_ALL + SA + A + TC + SC + MSFI + SIDPI + Stop_Start + DriveFWD + DriveRWD, data=df_essence)
+Third_RegHR <- lm(log(Hwy_Conso) ~ EngCyl + KG + BHP + AM_ALL + CVT_ALL + SA + A + TC + SC + MSFI + SIDPI + Stop_Start + DriveFWD + DriveRWD, data=df_essence)
 
 vif(Third_RegCR)
 vif(Third_RegHR)
@@ -104,10 +104,14 @@ vif(Third_RegHR)
 summary(Third_RegCR)
 summary(Third_RegHR)
 
+df_small <- subset(df_essence, Eng_Disp < 2)
+df_nsmall <- subset(df_essence, Eng_Disp >= 2)
 
+thrdRS  <- lm(log(Mix_Conso) ~ EngCyl + KG + BHP + AM_ALL + CVT_ALL + SA + A + TC + MSFI + Stop_Start + DriveFWD + DriveRWD, data=df_small)
+thrdRnS <- lm(log(Mix_Conso) ~ EngCyl + KG + BHP + AM_ALL + CVT_ALL + SA + A + TC + SC + MSFI + SIDPI + Stop_Start + DriveFWD + DriveRWD, data=df_nsmall)
 
-
-
+summary(thrdRS)
+summary(thrdRnS)
 
 
 
